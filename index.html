@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-    <meta name="format-detection" content="telephone=no"> 
+    <meta name="format-detection" content="telephone=no">
     <meta content="yes" name="mobile-web-app-capable">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta name="robots" content="all">
@@ -12,8 +13,8 @@
     <meta name="Copyright" content="" />
     <title>习近平邀请你视频通话</title>
     <link rel="shortcut icon" href="./assets/images/favicon.svg" type="image/x-icon">
-    <link rel="stylesheet" href="./assets/style.css"/>
-    <script> 
+    <link rel="stylesheet" href="./assets/style.css" />
+    <script>
         //屏幕适应 
         (function (win, doc) {
             if (!win.addEventListener) return;
@@ -32,17 +33,8 @@
             win.addEventListener('load', setFont, false);
         })(window, document);
     </script>
-    <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?83925515474bbd4c5922abb3f9b7b67b";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-    </script>        
-    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 </head>
+
 <body>
     <div id="app">
         <div class="logo"></div>
@@ -53,20 +45,26 @@
             <div class="bmp1" id="btn">
                 <div class="iphone"></div>
             </div>
-            <div class="ripple" >
+            <div class="ripple">
                 <svg id="svgAni" width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="50%" cy="50%" r="49%" stroke-width="1" stroke="#E7CD9C" fill="none" fill-opacity="0">
-                        <animate id="ani1" attributeName="r" begin="0" from="30%" to="49%" dur="1s" repeatCount="indefinite"></animate>
-                        <animate attributeName="opacity" begin="0" from="1" to="0" dur="1s" repeatCount="indefinite"></animate>
+                        <animate id="ani1" attributeName="r" begin="0" from="30%" to="49%" dur="1s"
+                            repeatCount="indefinite"></animate>
+                        <animate attributeName="opacity" begin="0" from="1" to="0" dur="1s" repeatCount="indefinite">
+                        </animate>
                     </circle>
-                    <circle  cx="50%" cy="50%" r="43%" stroke-width="1" stroke="#E7CD9C" fill="none" fill-opacity="0">
-                        <animate attributeName="r" begin=" ani1.begin + 0.3s" from="30%" to="49%" dur="1s" repeatCount="indefinite"></animate>
-                        <animate attributeName="opacity" begin="ani1.begin + 0.3s" from="1" to="0" dur="1s" repeatCount="indefinite"></animate>
+                    <circle cx="50%" cy="50%" r="43%" stroke-width="1" stroke="#E7CD9C" fill="none" fill-opacity="0">
+                        <animate attributeName="r" begin=" ani1.begin + 0.3s" from="30%" to="49%" dur="1s"
+                            repeatCount="indefinite"></animate>
+                        <animate attributeName="opacity" begin="ani1.begin + 0.3s" from="1" to="0" dur="1s"
+                            repeatCount="indefinite"></animate>
                     </circle>
-                    <circle  cx="50%" cy="50%" r="38%" stroke-width="1" stroke="#E7CD9C" fill="none" fill-opacity="0"> 
-                        <animate attributeName="r" begin=" ani1.begin + 0.6s" from="30%" to="49%" dur="1s" repeatCount="indefinite"></animate> 
-                        <animate attributeName="opacity" begin="ani1.begin + 0.6s" from="1" to="0" dur="1s" repeatCount="indefinite"></animate>
-                    </circle> 
+                    <circle cx="50%" cy="50%" r="38%" stroke-width="1" stroke="#E7CD9C" fill="none" fill-opacity="0">
+                        <animate attributeName="r" begin=" ani1.begin + 0.6s" from="30%" to="49%" dur="1s"
+                            repeatCount="indefinite"></animate>
+                        <animate attributeName="opacity" begin="ani1.begin + 0.6s" from="1" to="0" dur="1s"
+                            repeatCount="indefinite"></animate>
+                    </circle>
 
                 </svg>
             </div>
@@ -95,6 +93,85 @@
     <script src="./assets/libs/widget.min.js"></script>
     <script src="./assets/libs/player.min.js"></script>
     <script src="./assets/libs/anime.min.js"></script>
-    <script src="./assets/libs/share.js"></script>
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const video = urlParams.get('video');
+        $(function () {
+            // Get video url from url arguments, default is ./assets/video/index.mp4
+            var videoUrl = video || "./assets/video/index.mp4";
+            console.log(videoUrl);
+            var c = navigator.userAgent.toLowerCase(),
+                d = $("#btn")[0],
+                e = $("#weiBoBtn")[0],
+                f = $(".cover-safe"),
+                a = new Howl({
+                    src: ["./assets/images/ring.mp3"],
+                    loop: !0,
+                    preload: !0
+                }),
+                b = new MMD.VideoPlayer({
+                    videoElement: document.getElementById("video"),
+                    src: videoUrl
+                });
+            b.preload();
+            b.on(MMD.VideoEvent.START, function () {
+                f.remove();
+                anime({
+                    targets: [".logo", ".video"],
+                    opacity: 1,
+                    duration: 500,
+                    easing: "linear"
+                })
+            });
+            b.on(MMD.VideoEvent.END, function () {
+                anime({
+                    targets: ".logo",
+                    opacity: 0,
+                    duration: 100
+                })
+            });
+            d.onclick = function () {
+                b.play();
+                a.stop()
+            };
+            "weibo" == c.match(/WeiBo/i) ? ($(".WeiboTip").show(), e.onclick = function () {
+                anime({
+                    targets: ".WeiboTip",
+                    opacity: 0,
+                    duration: 500,
+                    easing: "linear",
+                    complete: function () {
+                        $(".WeiboTip").remove()
+                    }
+                });
+                anime({
+                    targets: [".ripple", ".bmp1"],
+                    opacity: 1,
+                    duration: 800,
+                    delay: 500,
+                    easing: "linear",
+                    complete: function () {
+                        a.play()
+                    }
+                })
+            }) : (a.on("load", function () {
+                window.WeixinJSBridge && window.WeixinJSBridge.invoke("getNetworkType", {}, function () {
+                    a.play();
+                    a.pause()
+                }, !1)
+            }), anime({
+                targets: [".ripple", ".bmp1"],
+                opacity: 1,
+                duration: 800,
+                delay: 500,
+                easing: "linear",
+                complete: function () {
+                    a.play()
+                }
+            }))
+        });
+    </script>
 </body>
+
 </html>
